@@ -22,10 +22,10 @@ func main() {
 }
 
 func realMain() int {
-	//// log.SetOutput(ioutil.Discard)
 
-	//// TODO Lup Yuen: args := os.Args[1:]
-	log.Println(strings.Join(os.Environ(), "\n")) ////
+	//// TODO Lup Yuen: Support Google Cloud AppEngine
+	// Previously: log.SetOutput(ioutil.Discard)
+	// Previously: args := os.Args[1:]
 
 	//  Get IP address.
 	iplist, err := ipaddr.GetPrivateIPv4(); if err != nil { log.Panic(err) }
@@ -33,12 +33,14 @@ func realMain() int {
 	host := iplist[0].String()
 
 	//  Set node name
+	// log.Println(strings.Join(os.Environ(), "\n"))
 	node := strings.Replace(os.Getenv("GCLOUD_PROJECT"), "unabiz-", "", -1)
 
 	//  Bootstrap first agent
-	cmd := "agent -bootstrap-expect=1"
+	// cmd := "agent -bootstrap-expect=1"
 	//  Subsequent agents will join
-	// cmd := "join ..."
+	cmd := "agent"
+	para := ""
 
 	cmdline := cmd + " " +
 		"-node=" + node + " " +
@@ -46,8 +48,15 @@ func realMain() int {
 		"-server -ui -enable-script-checks=true " +
 		"-data-dir=./" + node + "/data " +
 		"-config-dir=./" + node + "/conf"
+	if cmd == "join" {
+		cmdline = cmd + " " +
+			"-http-addr="
+	}
+	if para != "" { cmdline = cmdline + " " + para }
 	log.Printf("cmdline: %s", cmdline)
 	args := strings.Split(cmdline, " ")
+
+	//// Lup Yuen: End of changes
 
 	for _, arg := range args {
 		if arg == "--" {
