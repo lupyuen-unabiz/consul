@@ -10,6 +10,7 @@ import (
 	"github.com/hashicorp/consul/lib"
 	"github.com/mitchellh/cli"
 	"strings"
+	"github.com/hashicorp/consul/ipaddr"
 )
 
 func init() {
@@ -26,21 +27,27 @@ func realMain() int {
 	//// TODO Lup Yuen: args := os.Args[1:]
 	log.Println(strings.Join(os.Environ(), "\n")) ////
 
+	//  Get IP address.
+	iplist, err := ipaddr.GetPrivateIPv4(); if err != nil { log.Panic(err) }
+	log.Printf("iplist: %v", iplist)
+	host := iplist[0].String()
+
 	//  Set node name
-	node := "unaops"
+	node := strings.Replace(os.Getenv("GCLOUD_PROJECT"), "unabiz-", "", -1)
 
 	//  Bootstrap first agent
 	cmd := "agent -bootstrap-expect=1"
 	//  Subsequent agents will join
 	// cmd := "join ..."
 
-	args := strings.Split(
-		cmd + " " +
+	cmdline := cmd + " " +
 		"-node=" + node + " " +
-		"-server -ui -http-port 8080 -enable-script-checks=true " +
+		"-client=" + host + " -http-port=8080 " +
+		"-server -ui -enable-script-checks=true " +
 		"-data-dir=./" + node + "/data " +
-		"-config-dir=./" + node + "/conf",
-	" ")
+		"-config-dir=./" + node + "/conf"
+	log.Printf("cmdline: %s", cmdline)
+	args := strings.Split(cmdline, " ")
 
 	for _, arg := range args {
 		if arg == "--" {

@@ -3,6 +3,9 @@
     <module name="consul" />
     <working_directory value="$PROJECT_DIR$/appengine" />
     <go_parameters value="-i" />
+    <envs>
+      <env name="GCLOUD_PROJECT" value="unabiz-unaops" />
+    </envs>
     <kind value="DIRECTORY" />
     <filePath value="$PROJECT_DIR$/appengine/main.go" />
     <package value="github.com/hashicorp/consul" />
