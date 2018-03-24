@@ -9,6 +9,7 @@ import (
 	"github.com/hashicorp/consul/command"
 	"github.com/hashicorp/consul/lib"
 	"github.com/mitchellh/cli"
+	"strings"
 )
 
 func init() {
@@ -22,7 +23,11 @@ func main() {
 func realMain() int {
 	log.SetOutput(ioutil.Discard)
 
-	args := os.Args[1:]
+	//// TODO Lup Yuen: args := os.Args[1:]
+	args := strings.Split(
+		"agent -node=unaops -server -bootstrap-expect=1 -data-dir=./data -config-dir=./config -enable-script-checks=true",
+		" ")
+
 	for _, arg := range args {
 		if arg == "--" {
 			break

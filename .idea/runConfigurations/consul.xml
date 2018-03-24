@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="consul" type="GoApplicationRunConfiguration" factoryName="Go Application" singleton="true" show_console_on_std_out="true" show_console_on_std_err="true">
+    <module name="consul" />
+    <working_directory value="$PROJECT_DIR$/appengine" />
+    <go_parameters value="-i" />
+    <kind value="FILE" />
+    <filePath value="$PROJECT_DIR$/appengine/main.go" />
+    <package value="github.com/hashicorp/consul" />
+    <directory value="$PROJECT_DIR$/" />
+    <output_directory value="$PROJECT_DIR$/appengine" />
+    <method />
+  </configuration>
+</component>
