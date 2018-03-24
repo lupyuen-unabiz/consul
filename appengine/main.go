@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
+	//// "io/ioutil"
 	"log"
 	"os"
 
@@ -21,7 +21,7 @@ func main() {
 }
 
 func realMain() int {
-	log.SetOutput(ioutil.Discard)
+	//// log.SetOutput(ioutil.Discard)
 
 	//// TODO Lup Yuen: args := os.Args[1:]
 	log.Println(strings.Join(os.Environ(), "\n")) ////
