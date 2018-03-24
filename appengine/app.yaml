@@ -14,7 +14,6 @@ network:
     - 8302/tcp
     - 8600/tcp
     - 8600/udp
-    - 8080/tcp
 
 manual_scaling:
   instances: 1
