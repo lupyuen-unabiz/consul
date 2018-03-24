@@ -24,8 +24,17 @@ func realMain() int {
 	log.SetOutput(ioutil.Discard)
 
 	//// TODO Lup Yuen: args := os.Args[1:]
+	log.Println(strings.Join(os.Environ(), "\n")) ////
+	node := "unaops"
+	cmd := "-bootstrap-expect=1"
+	// cmd := "join unaops"
+
 	args := strings.Split(
-		"agent -node=unaops -server -bootstrap-expect=1 -data-dir=./data -config-dir=./config -enable-script-checks=true",
+		"agent -node=" + node + " " +
+			cmd + " " +
+			"-server -ui -http-port 8080 -enable-script-checks=true " +
+			"-data-dir=./" + node + "/data " +
+			"-config-dir=./" + node + "/conf",
 		" ")
 
 	for _, arg := range args {

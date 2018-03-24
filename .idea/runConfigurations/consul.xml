@@ -3,10 +3,10 @@
     <module name="consul" />
     <working_directory value="$PROJECT_DIR$/appengine" />
     <go_parameters value="-i" />
-    <kind value="FILE" />
+    <kind value="DIRECTORY" />
     <filePath value="$PROJECT_DIR$/appengine/main.go" />
     <package value="github.com/hashicorp/consul" />
-    <directory value="$PROJECT_DIR$/" />
+    <directory value="$PROJECT_DIR$/appengine" />
     <output_directory value="$PROJECT_DIR$/appengine" />
     <method />
   </configuration>

@@ -1,0 +1,41 @@
+service: consul
+
+env: flex
+runtime: go1.10
+
+network:
+  instance_tag: grafana
+  name: default
+
+manual_scaling:
+  instances: 1
+
+resources:
+  cpu: 1
+  memory_gb: 1
+  disk_size_gb: 10
+
+# Must use an unprotected URL for liveness and readiness checks
+
+liveness_check:
+  path: "/?zzz=liveness_check"
+  timeout_sec: 300
+  check_interval_sec: 300
+  failure_threshold: 10
+  success_threshold: 1
+  initial_delay_sec: 3600
+
+readiness_check:
+  path: "/?zzz=readiness_check"
+  timeout_sec: 300
+  check_interval_sec: 300
+  failure_threshold: 10
+  success_threshold: 1
+  app_start_timeout_sec: 3600
+
+# Define credentials as environment variables
+#includes:
+#- env.yaml
+
+skip_files:
+- ^static.go$
