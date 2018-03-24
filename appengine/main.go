@@ -25,17 +25,22 @@ func realMain() int {
 
 	//// TODO Lup Yuen: args := os.Args[1:]
 	log.Println(strings.Join(os.Environ(), "\n")) ////
+
+	//  Set node name
 	node := "unaops"
-	cmd := "-bootstrap-expect=1"
-	// cmd := "join unaops"
+
+	//  Bootstrap first agent
+	cmd := "agent -bootstrap-expect=1"
+	//  Subsequent agents will join
+	// cmd := "join ..."
 
 	args := strings.Split(
-		"agent -node=" + node + " " +
-			cmd + " " +
-			"-server -ui -http-port 8080 -enable-script-checks=true " +
-			"-data-dir=./" + node + "/data " +
-			"-config-dir=./" + node + "/conf",
-		" ")
+		cmd + " " +
+		"-node=" + node + " " +
+		"-server -ui -http-port 8080 -enable-script-checks=true " +
+		"-data-dir=./" + node + "/data " +
+		"-config-dir=./" + node + "/conf",
+	" ")
 
 	for _, arg := range args {
 		if arg == "--" {

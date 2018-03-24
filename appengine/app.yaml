@@ -18,7 +18,7 @@ resources:
 # Must use an unprotected URL for liveness and readiness checks
 
 liveness_check:
-  path: "/?zzz=liveness_check"
+  path: "/"
   timeout_sec: 300
   check_interval_sec: 300
   failure_threshold: 10
@@ -26,7 +26,7 @@ liveness_check:
   initial_delay_sec: 3600
 
 readiness_check:
-  path: "/?zzz=readiness_check"
+  path: "/"
   timeout_sec: 300
   check_interval_sec: 300
   failure_threshold: 10
