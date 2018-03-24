@@ -22,3 +22,4 @@ exit-code
 #website/npm-debug.log
 #website/vendor
 /appengine/una*/
+/.env

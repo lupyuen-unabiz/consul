@@ -31,7 +31,7 @@ echo ========= ${name} ========= "./scripts/go-get.sh"
 
 # Set GCLOUD_PROJECT in .env
 export GCLOUD_PROJECT=
-. ../../../.env
+. ../.env
 
 # Deploy to Google Cloud.
 echo ========= ${name} ========= gcloud config set project ${GCLOUD_PROJECT}
