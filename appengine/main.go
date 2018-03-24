@@ -22,6 +22,18 @@ func main() {
 	os.Exit(realMain())
 }
 
+/*
+POST https://www.googleapis.com/dns/v1beta2/projects/unabiz-unaops/managedZones/unaops-zone/changes
+{
+  "additions": [
+    {
+      "name": "unaops-consul.unaops.local.",
+      "type": "A",
+      "ttl": 300,
+      "rrdatas": [
+        "1.2.3.4"
+      ]}]}
+ */
 func realMain() int {
 
 	//// TODO Lup Yuen: Support Google Cloud AppEngine
@@ -46,10 +58,13 @@ func realMain() int {
 
 	//  Bootstrap first agent
 	//  cmd := "agent -bootstrap-expect=1"
+	//  para := []string{}
 
 	//  Subsequent agents:
 	cmd := "agent"
-	para := ""
+	para := []string{
+		"-join-wan=x.x.x.x",
+	}
 
 	//  Subsequent agents will join the first agent using this command line:
 	//  	./consul join -wan -http-addr=http://Luppys-MacBook-Pro.local:8080 x.x.x.x
@@ -62,11 +77,7 @@ func realMain() int {
 		"-server -ui -enable-script-checks=true " +
 		"-data-dir=./" + node + "/data " +
 		"-config-dir=./" + node + "/conf"
-	if cmd == "join" {
-		cmdline = cmd + " " +
-			"-http-addr="
-	}
-	if para != "" { cmdline = cmdline + " " + para }
+	if len(para) > 0 { cmdline = cmdline + " " + strings.Join(para, " ") }
 	log.Printf("cmdline: %s", cmdline)
 	args := strings.Split(cmdline, " ")
 
