@@ -3,7 +3,10 @@ service: consul
 env: flex
 runtime: go1.10
 
-# Remember to allow access through Google Cloud Firewall
+# Remember to allow access through Google Cloud Firewall: VPC Network -> Firewall Rules
+# Targets: Target Tag "consul"
+# Source IP Range: 0.0.0.0/0
+# Protocols and port: tcp:8300-8302; tcp:8600; udp:8600
 
 network:
   instance_tag: consul
