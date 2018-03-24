@@ -3,9 +3,18 @@ service: consul
 env: flex
 runtime: go1.10
 
+# Remember to allow access through Google Cloud Firewall
+
 network:
   instance_tag: consul
   name: default
+  forwarded_ports:
+    - 8300/tcp
+    - 8301/tcp
+    - 8302/tcp
+    - 8600/tcp
+    - 8600/udp
+    - 8080/tcp
 
 manual_scaling:
   instances: 1
