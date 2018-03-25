@@ -54,31 +54,29 @@ func realMain() int {
 
 	//  Set node name.  If service name in app.yaml is consulXXX, then node name is nodeXXX
 	// log.Println(strings.Join(os.Environ(), "\n"))
-	datacenter := strings.Replace(os.Getenv("GCLOUD_PROJECT"), "unabiz-", "", -1)  //  Datacenter name is project ID.
-	node := datacenter
+	node := strings.Replace(os.Getenv("GCLOUD_PROJECT"), "unabiz-", "", -1)
 	service := os.Getenv("GAE_SERVICE")
 	instance := strings.Replace(service, "consul", "", -1)
 	if instance != "" { node = node + instance }
 
-	//  Bootstrap first agent in each datacenter
-	// cmd := "agent -bootstrap"
+	//  Bootstrap the cluster using first 2 agents
+	//  cmd := "agent -bootstrap-expect=2"
 
-	//  Bootstrap using 2 agents in each datacenter
-	cmd := "agent -bootstrap-expect=2"
+	//  Subsequent agents join the cluster
+	cmd := "agent"
 
-	//  Subsequent agents in each datacenter
-	//  cmd := "agent"
-
-	//  Join the agents in other datacenters
+	//  Join the cluster through other agents
 	para := []string{
-		"-join-wan=x.x.x.x",
+		"-join=x.x.x.x",
+		"-join=x.x.x.x",
+		"-join=x.x.x.x",
+		"-join=x.x.x.x",
 	}
 
 	cmdline := cmd + " " +
 		"-node=" + node + " " +
-		"-datacenter=" + datacenter + " " +
 		"-client=" + internalIP + " -http-port=8080 " + //  Needed for App Engine health check
-		"-advertise-wan=" + externalIP + " " +  //  Ports 8301, 8302 use a different external IP address
+		"-advertise=" + externalIP + " " +  //  Ports 8301, 8302 need to be reached through the external IP address
 		"-encrypt=xxxx " +  //  Encryption key must be same for all nodes
 		"-server -ui -enable-script-checks=true " +
 		"-data-dir=./" + node + "/data " +
