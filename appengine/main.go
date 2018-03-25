@@ -52,28 +52,34 @@ func realMain() int {
 	}
 	log.Printf("Internal IP: %v", iplist)
 
-	//  Set node name
+	//  Set node name.  If service name in app.yaml is consulXXX, then node name is nodeXXX
 	// log.Println(strings.Join(os.Environ(), "\n"))
-	node := strings.Replace(os.Getenv("GCLOUD_PROJECT"), "unabiz-", "", -1)
+	datacenter := strings.Replace(os.Getenv("GCLOUD_PROJECT"), "unabiz-", "", -1)  //  Datacenter name is project ID.
+	node := datacenter
+	service := os.Getenv("GAE_SERVICE")
+	instance := strings.Replace(service, "consul", "", -1)
+	if instance != "" { node = node + instance }
 
-	//  Bootstrap first agent
-	//  cmd := "agent -bootstrap-expect=1"
-	//  para := []string{}
+	//  Bootstrap first agent in each datacenter
+	// cmd := "agent -bootstrap"
 
-	//  Subsequent agents:
-	cmd := "agent"
+	//  Bootstrap using 2 agents in each datacenter
+	cmd := "agent -bootstrap-expect=2"
+
+	//  Subsequent agents in each datacenter
+	//  cmd := "agent"
+
+	//  Join the agents in other datacenters
 	para := []string{
 		"-join-wan=x.x.x.x",
 	}
 
-	//  Subsequent agents will join the first agent using this command line:
-	//  	./consul join -wan -http-addr=http://Luppys-MacBook-Pro.local:8080 x.x.x.x
-	//  where x.x.x.x is the External IP address obtained from App Engine -> Instances -> VM IP
-
 	cmdline := cmd + " " +
 		"-node=" + node + " " +
+		"-datacenter=" + datacenter + " " +
 		"-client=" + internalIP + " -http-port=8080 " + //  Needed for App Engine health check
 		"-advertise-wan=" + externalIP + " " +  //  Ports 8301, 8302 use a different external IP address
+		"-encrypt=xxxx " +  //  Encryption key must be same for all nodes
 		"-server -ui -enable-script-checks=true " +
 		"-data-dir=./" + node + "/data " +
 		"-config-dir=./" + node + "/conf"
