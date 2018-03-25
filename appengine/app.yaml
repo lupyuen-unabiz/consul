@@ -1,15 +1,26 @@
+# First instance
 service: consul
+# Next instance
+# service: consul2
 
 env: flex
 runtime: go1.10
 
 # Remember to allow access through Google Cloud Firewall: VPC Network -> Firewall Rules
-# Targets: Target Tag "consul"
+# Network: Default
+# Priority: 1000
+# Direction: Ingress
+# Action: Allow
+# Targets: Specified Target Tag "consul", "consul2", ...
+# Source Filter: IP Range
 # Source IP Range: 0.0.0.0/0
 # Protocols and port: tcp:8300-8302; tcp:8600; udp:8600
 
 network:
+  # First instance
   instance_tag: consul
+  # Next instance
+  # instance_tag: consul2
   name: default
   forwarded_ports:
     - 8300/tcp
@@ -23,7 +34,7 @@ manual_scaling:
 
 resources:
   cpu: 1
-  memory_gb: 1
+  memory_gb: 0.5
   disk_size_gb: 10
 
 # Must use an unprotected URL for liveness and readiness checks
